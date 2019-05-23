@@ -1,0 +1,89 @@
+1. Hibernate is database independent. You can work with any database you want like oracle,mysql,db2,sql server ,etc. 
+	Using hibernate you won't worry about writing database specific queries and syntax. 
+	It's provides HQL (Hibernate Query Language), which is compatible with any database server. 
+	You just need to write queries in HQL, at the end hibernate converts HQL to underlying database and executes it. 
+ 
+2. In ORM, you will map a database table with java object called "Entity". So once you map these, you will get advantages of OOP concepts like inheritance, encapsulation,etc. 
+ 
+3. Caching mechanism (1st level & 2nd level cache) provided hibernate means you don't need to hit database for similar queries.
+	You can cache it and use it from buffered memory to improve performance. 
+
+4. Supports Lazy loading (also called n+1 problem in Hibernate). Take an example-parent class has n number of child class. 
+	So When you want information from only 1 child class, there is no meaning of loading n child classes.
+	This is called lazy loading (Load only thing which you want).
+
+5. Hibernate handles all low level SQL 
+
+6. Minimizes JDBC Code
+
+7. You can simply create your Entity class & save your object into db
+
+8. Hibernate itself maps Java classes to database tables using XML or by using annotations.
+
+9. Hibernate’s code is database independent because you do not need to change the HQL queries (with a few exceptions) when you change databases like MySQL, Oracle, etc. 
+	Hence, it is easy to migrate to a new database. It is achieved by using a friendly dialect to communicate with the database. 
+	The database can be specified using a dialect in the Hibernate configuration XML as follows.
+
+	<property name="dialect">org.hibernate.dialect.MySQL</property>
+
+	For example, consider the following scenario. You need to fetch the first 10 entries of a table. 
+	How this is implemented in different databases is explained below:
+
+#MySQL
+SELECT column_name FROM table_name ORDER BY column_name ASC LIMIT 10; 
+
+#SQL Server 
+SELECT TOP 10 column_name FROM table_name ORDER BY column_name ASC;
+
+	In Hibernate, this can be done as follows:-
+	
+	Session.CreateQuery("SELECT E.id FROM Employee E ORDER BY E.id ASC").SetMaxResults(10).List();
+
+10. Avoiding Try-Catch Blocks:- JDBC will throw SQLexception, which is a checked exception. So you will be writing “try-catch” blocks in your code. 
+	Hibernate handles this by converting all JDBC exceptions to unchecked exceptions. Therefore, you need not waste your time implementing try-catch blocks. 
+	
+11. Hibernate provides a library called “Envers”, which enables us to easily gain audit functionality. It creates tables and stores the audited data with version number from where we can track the changes made to the entity. 
+	Let me explain how auditing is done using Envers.
+
+@Entity
+@Table(name = "User")
+@Audited
+public class User {
+    // ... the body of the entity
+}
+
+	When we add the @Audited annotation in our entity class, Hibernate will create a table called User_AUD to store the audited entries. 
+	The table will contain two additional fields — REVTYPE and REV. REVTYPE is the type of the revision. 
+	It can store the values as add for inserting, mod for modifying, and del for deleting. The REV field contains the revision number of the stored entry. 
+	Hibernate creates an extra table called REVINFO in which the REV number is mapped with a timestamp when the change of the entity happened. 
+	You can also customize the revision table using @RevisionEntity.
+
+12. Hibernate provides support to JPA annotations like @Entity, @Table, @Column, etc. These annotations make the code portable to other ORM frameworks. 
+
+13. Connection pooling is a mechanism in which the database connections, when created are stored in the cache by an external tool 
+		so that these connections can be reused from the cache when the application tries to connect to the same database in future. 
+		Connection pooling helps increase performance. We can achieve this connection pooling in Hibernate. Hibernate supports the following pools:
+
+		C3p0 , Apache DBCP , Proxool 
+		
+	You need to set the properties in Hibernate.cfg.xml as required to enable connection pooling. A sample property is shown below.
+
+  <property name="hibernate.c3p0.min_size">5</property>
+  <property name="hibernate.c3p0.max_size">20</property>
+  <property name="hibernate.c3p0.timeout">300</property>
+  <property name="hibernate.c3p0.max_statements">50</property>
+  <property name="hibernate.c3p0.idle_test_period">3000</property>
+
+14. Database versioning is an important feature of Hibernate. Hibernate enables developers to define version type fields in an application, which is updated when data is updated every time. 
+ 	The advantage is if two different users retrieve the same data and then modify it, and one user saved their modified data to the database before the other user, the version is updated. 
+ 	Now when the other user tries to saves their data, it will not allow it because this data is not up to date. 
+ 	In JDBC, this check is performed by the developer.
+ 	
+15. Hibernate provides a caching mechanism, which helps reduce the number of hits, as much as possible, that your application makes to the database server. 
+	This will have a considerable effect regarding the performance of your application. There is no such caching mechanism available in JDBC. 
+	This is because Hibernate stores the object in session, which is available until the transaction is active. 
+	When a particular query is executed repeatedly, the value stored in the session is used. 
+	When a new transaction begins, the object is fetched again from the database and is stored in the session. 
+	In fact, two levels of caches are provided by Hibernate. 
+
+	
