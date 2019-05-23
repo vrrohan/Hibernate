@@ -1,0 +1,18 @@
+Required Jars -
+
+1. Right click on project, create "lib" folder
+2. download hibernate orm jars, goto "hibernate-release-version.FINAL --> lib --> required" folder, copy all jars & paste in "lib" folder of your project
+3. Now goto "optional --> c3p0" & copy all 3 jars to "lib" folder of your project
+4. Also copy & paste mysql-java-connector jar file into "lib" folder
+5. right click on project --> properties --> Java build path --> libraries --> Add Jars --> Select your project --> lib folder --> select all jars --> apply & exit
+
+==================
+
+* jars in referenced libraries must match jars in lib folder
+
+==================
+
+executeQuery() - returns ResultSet, process only select statements
+executeUpdate() - returns number of updated or deleted rows. Only for update, insert or delete statements
+execute() - takes any sql statements. returns boolean true if resultset object is returned i.e. we can check resultset what we get. returns boolean false when int value is returned or void is returned.
+
